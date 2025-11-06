@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buscador de Fármacos</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .search-container {
+    position: relative;
+    width: 300px;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #aaa;
+    outline: none;
+    font-size: 16px;
+  }
+
+  .suggestions {
+    position: absolute;
+    top: 40px;
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+    display: none;
+  }
+
+  .suggestions div {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .suggestions div:hover {
+    background-color: #e9ecef;
+  }
+</style>
+</head>
+<body>
+
+<div class="search-container">
+  <input type="text" id="search" placeholder="Buscar fármaco...">
+  <div class="suggestions" id="suggestions"></div>
+</div>
+
+<script>
+  // Lista de fármacos con sus archivos HTML asociados
+  const farmacos = [
+  { nombre: "AcetilS", url: "Acido AcetilS.html" },
+  { nombre: "Ácido Nalixico", url: "Acido Nalixico.html" },
+  { nombre: "Ácido pipemédico", url: "Acido pipemedico.html" },
+  { nombre: "Ácido Valproico", url: "Acido Valproico.html" },
+  { nombre: "AINES", url: "AINES.html" },
+  { nombre: "Albendazol", url: "Albendozol.html" },
+  { nombre: "Alocales", url: "Alocales.html" },
+  { nombre: "Amantadina", url: "Amantadina.html" },
+  { nombre: "Amikacina", url: "Amikacina.html" },
+  { nombre: "Amoxicilina", url: "Amoxicilina.html" },
+  { nombre: "Ampicilina", url: "Ampicilina.html" },
+  { nombre: "Anfotericina B", url: "Anfotericina B.html" },
+  { nombre: "Aminoglucósidos", url: "Aminoglucosidos.html" },
+  { nombre: "Antibióticos diversos", url: "AntibioticosDiversos.html" },
+  { nombre: "Antibióticos índice", url: "Antibioticosindice.html" },
+  { nombre: "Anticonvulsivos", url: "Anticonvulsivos.html" },
+  { nombre: "Antidepresivos", url: "Antidepresivos.html" },
+  { nombre: "Antipsicóticos", url: "Antipsicoticos.html" },
+  { nombre: "Antisépticos", url: "Antisepticos.html" },
+  { nombre: "Antimicóticos", url: "Antimicoticos.html" },
+  { nombre: "Azitromicina", url: "Azitromicina.html" },
+  { nombre: "Barbitúricos", url: "Barbituricos.html" },
+  { nombre: "Benzodiacepinas", url: "Benzodiacepinas.html" },
+  { nombre: "Benzetonio Benzalconio", url: "BenzetonioBenzalconio.html" },
+  { nombre: "Betametasona", url: "Betametasona.html" },
+  { nombre: "Buprenorfina", url: "Buprenorfina.html" },
+  { nombre: "Bupivacina", url: "Bupivacina.html" },
+  { nombre: "B-Lactámicos", url: "B-Lactamicos.html" },
+  { nombre: "Candesartán", url: "Candesartan.html" },
+  { nombre: "Carbamecepina", url: "Carbamecepina.html" },
+  { nombre: "Captopril", url: "captopril.html" },
+  { nombre: "Cefalexina", url: "Cefalexina.html" },
+  { nombre: "Cefalosporinas", url: "Cefalosporinas.html" },
+  { nombre: "Cefepima", url: "Cefepima.html" },
+  { nombre: "Cefotaxima", url: "Cefotaxima.html" },
+  { nombre: "Ceftriaxona", url: "Ceftriaxona.html" },
+  { nombre: "Celecoxib", url: "Celecoxib.html" },
+  { nombre: "Ciprofloxacino", url: "Ciprofloxacino.html" },
+  { nombre: "Claritromicina", url: "Claritromicina.html" },
+  { nombre: "Clindamicina", url: "Clindamicina.html" },
+  { nombre: "Clonazepam", url: "Clonazepam.html" },
+  { nombre: "Clordiazepóxido", url: "Clordiazepoxido.html" },
+  { nombre: "Cloranfenicol", url: "Cloranfenicol.html" },
+  { nombre: "Clorhexidina", url: "Clorhexidina.html" },
+  { nombre: "Cloroquina", url: "Cloroquina.html" },
+  { nombre: "Clorpromazina", url: "Clorpromazina.html" },
+  { nombre: "Clotrimazol", url: "Clotrimazol.html" },
+  { nombre: "Corticoesteroides", url: "Corticoesteroides.html" },
+  { nombre: "Diazepam", url: "Diazepam.html" },
+  { nombre: "Dicloxacilina", url: "Dicloxacilina.html" },
+  { nombre: "Diclofenaco", url: "Diclofenaco.html" },
+  { nombre: "Diloxanida", url: "Diloxanida.html" },
+  { nombre: "Doxiciclina", url: "Doxiciclina.html" },
+  { nombre: "Dexametasona", url: "Dexametasona.html" },
+  { nombre: "Eritromicina", url: "Eritromicina.html" },
+  { nombre: "Espironolactona", url: "Espironolactona.html" },
+  { nombre: "Etambutol", url: "Etambutol.html" },
+  { nombre: "Etosuximida", url: "Etosuximida.html" },
+  { nombre: "Estreptomicina", url: "Estreptomicina.html" },
+  { nombre: "Fenelzina", url: "Fenelzina.html" },
+  { nombre: "Fenitoína", url: "Fenitoina.html" },
+  { nombre: "Fenobarbital", url: "Fenobarbital.html" },
+  { nombre: "Fluoxetina", url: "Fluoxetina.html" },
+  { nombre: "Furosemida", url: "Furosemida.html" },
+  { nombre: "Gatifloxacino", url: "Gatifloxacino.html" },
+  { nombre: "Gentamicina", url: "Gentamicina.html" },
+  { nombre: "Glibenclamida", url: "Glibenclamida.html" },
+  { nombre: "Haloperidol", url: "Haloperidol.html" },
+  { nombre: "Hidroclorotiazida", url: "Hidroclorotiazida.html" },
+  { nombre: "Hidrocortisona", url: "Hidrocortisona.html" },
+  { nombre: "Hipoclorito Sódico", url: "Hipoclorito_Sódico.html" },
+  { nombre: "Ibuprofeno", url: "Ibuprofeno.html" },
+  { nombre: "Imipenem", url: "Imipenem.html" },
+  { nombre: "Imipramina", url: "Imipramina.html" },
+  { nombre: "Indometacina", url: "Indometacina.html" },
+  { nombre: "Insulina", url: "Insulina.html" },
+  { nombre: "Isoniazida", url: "Isoniazida.html" },
+  { nombre: "Ketoconazol", url: "Ketoconazol.html" },
+  { nombre: "Ketoprofeno", url: "Ketoprofeno.html" },
+  { nombre: "Levofloxacino", url: "Levofloxacino.html" },
+  { nombre: "Lidocaína", url: "Lidocaína.html" },
+  { nombre: "Lincomicina", url: "Lincomicina.html" },
+  { nombre: "Litio", url: "Litio.html" },
+  { nombre: "Lorazepam", url: "Lorazepam.html" },
+  { nombre: "Losartán", url: "Losartán.html" },
+  { nombre: "Macrólidos", url: "Macrolidos.html" },
+  { nombre: "Mebendazol", url: "Mebendazol.html" },
+  { nombre: "Meperidina", url: "Meperidina.html" },
+  { nombre: "Mepivacaína", url: "Mepivacaína.html" },
+  { nombre: "Meropenem", url: "Meropenem.html" },
+  { nombre: "Metadona", url: "Metadona.html" },
+  { nombre: "Metamizol", url: "Metamizol.html" },
+  { nombre: "Metformina", url: "Metformina.html" },
+  { nombre: "Metoprolol", url: "Metoprolol.html" },
+  { nombre: "Metronidazol", url: "Metrodinazol.html" },
+  { nombre: "Micafungin", url: "Micafungin.html" },
+  { nombre: "Minociclina", url: "Minociclina.html" },
+  { nombre: "Morfina", url: "Morfina.html" },
+  { nombre: "Moxifloxacino", url: "Moxifloxacino.html" },
+  { nombre: "Nalbufina", url: "Nalbunfina.html" },
+  { nombre: "Naproxeno", url: "Naproxeno.html" },
+  { nombre: "Netilmicina", url: "Netilmicina.html" },
+  { nombre: "Nifedipino", url: "Nifedipino.html" },
+  { nombre: "Nimesulida", url: "Nimesulida.html" },
+  { nombre: "Nistatina", url: "Nistatina.html" },
+  { nombre: "Nitrofurantoína", url: "Nitrofurantoina.html" },
+  { nombre: "Norfloxacino", url: "Norfloxacino.html" },
+  { nombre: "Opioides", url: "Opioides.html" },
+  { nombre: "Oxazepam", url: "Oxazepam.html" },
+  { nombre: "Oxicodona", url: "Oxicodona.html" },
+  { nombre: "Oxitetraciclina", url: "Oxitetraciclina.html" },
+  { nombre: "Paracetamol", url: "Paracetamol.html" },
+  { nombre: "Pentobarbital", url: "Pentobarbital.html" },
+  { nombre: "Pentozocina", url: "Pentozocina.html" },
+  { nombre: "Penicilina G", url: "Penicilina_G.html" },
+  { nombre: "Penicilina V", url: "Penicilina_V.html" },
+  { nombre: "Peróxido de Hidrógeno", url: "Peróxido_de_Hidrógeno.html" },
+  { nombre: "Pioglitazona", url: "Pioglitazona.html" },
+  { nombre: "Pirazinamida", url: "Pirazinamida.html" },
+  { nombre: "Piroxicam", url: "Piroxicam.html" },
+  { nombre: "Praziquantel", url: "Praziquantel.html" },
+  { nombre: "Prednisona", url: "Prednisona.html" },
+  { nombre: "Primaquina", url: "Primaquina.html" },
+  { nombre: "Proparacaína", url: "Proparacaína.html" },
+  { nombre: "Quitina", url: "Quitina.html" },
+  { nombre: "Rifampicina", url: "Rimfapicina.html" },
+  { nombre: "Rosiglitazona", url: "Rosiglitazona.html" },
+  { nombre: "Ribavirina", url: "Ribavirina.html" },
+  { nombre: "Sertaconazol", url: "Sertaconazol.html" },
+  { nombre: "Sertralina", url: "Sertralina.html" },
+  { nombre: "Tetraciclina", archivo: "Tetraciclina.html" },
+  { nombre: "Tetraciclinas", archivo: "Tetraciclinas.html" },
+  { nombre: "Ticarcilina", archivo: "Ticarcilina.html" },
+  { nombre: "Tiopental", archivo: "Tiopental.html" },
+  { nombre: "Tobramicina", archivo: "Tobramicina.html" },
+  { nombre: "Tolnaftato Tinacina", archivo: "Tolnaftato_Tinacina.html" },
+  { nombre: "Trazadona", archivo: "Trazadona.html" },
+  { nombre: "Tricomonicidas", archivo: "Tricomonicidas.html" },
+  { nombre: "Trimetropim Sulfametoxazol", archivo: "TrimetropimSulfametoxazol.html" },
+  { nombre: "Valsartan", archivo: "Valsartan.html" },
+  { nombre: "Vancomicina", archivo: "Vancomicina.html" },
+  { nombre: "Venlafaxina", archivo: "Venlafaxina.html" },
+  { nombre: "Verapamil", archivo: "Verapamil.html" },
+  { nombre: "Zidovudina", archivo: "Zidovudina.html" }
+];
+
+
+  const searchInput = document.getElementById("search");
+  const suggestions = document.getElementById("suggestions");
+
+  searchInput.addEventListener("input", () => {
+    const input = searchInput.value.toLowerCase();
+    suggestions.innerHTML = "";
+
+    if (input === "") {
+      suggestions.style.display = "none";
+      return;
+    }
+
+    const resultados = farmacos.filter(f => f.nombre.toLowerCase().includes(input));
+
+    if (resultados.length > 0) {
+      suggestions.style.display = "block";
+      resultados.forEach(f => {
+        const div = document.createElement("div");
+        div.textContent = f.nombre;
+        div.addEventListener("click", () => {
+          window.location.href = f.url; // redirige al HTML del fármaco
+        });
+        suggestions.appendChild(div);
+      });
+    } else {
+      suggestions.style.display = "none";
+    }
+  });
+
+  // Oculta sugerencias al hacer clic fuera
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".search-container")) {
+      suggestions.style.display = "none";
+    }
+  });
+</script>
+
+</body>
+</html>

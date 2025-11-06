@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camping Gear Website | CodingNepal</title>
+    <link rel="stylesheet" href="style1.css">
+    <!-- Fontawesome Link for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+  </head>
+  <body>
+   
+
+    <section class="homepage" id="home">
+      <div class="content">
+        <div class="text">
+          <h1>INDICE DE FARMACOS</h1>
+          <p>
+            Farmaco ordenados alfabeticamente </p>
+        </div>
+        <a href="index.html">Regresar al incio</a>
+      </div>
+    </section>
+    <section class="portfolio" id="portfolio">
+      <div>
+      
+        <div class="search-container">
+  <input type="text" id="search" placeholder="Buscar fármaco...">
+  <div class="suggestions" id="suggestions"></div>
+</div>
+
+<script>
+  // Lista de fármacos con sus archivos HTML asociados
+  const farmacos = [
+  { nombre: "Acetil Acetil Salicilico", url: "Acido AcetilS.html" },
+  { nombre: "Ácido Nalixico", url: "Acido Nalixico.html" },
+  { nombre: "Ácido pipemédico", url: "Acido pipemedico.html" },
+  { nombre: "Ácido Valproico", url: "Acido Valproico.html" },
+  { nombre: "Albendazol", url: "Albendozol.html" },
+  { nombre: "Amantadina", url: "Amantadina.html" },
+  { nombre: "Amikacina", url: "Amikacina.html" },
+  { nombre: "Amoxicilina", url: "Amoxicilina.html" },
+  { nombre: "Ampicilina", url: "Ampicilina.html" },
+  { nombre: "Anfotericina B", url: "Anfotericina B.html" },
+  { nombre: "Azitromicina", url: "Azitromicina.html" },
+  { nombre: "Barbitúricos", url: "Barbituricos.html" },
+  { nombre: "Benzodiacepinas", url: "Benzodiacepinas.html" },
+  { nombre: "Benzetonio Benzalconio", url: "BenzetonioBenzalconio.html" },
+  { nombre: "Betametasona", url: "Betametasona.html" },
+  { nombre: "Buprenorfina", url: "Buprenorfina.html" },
+  { nombre: "Bupivacina", url: "Bupivacina.html" },
+  { nombre: "B-Lactámicos", url: "B-Lactamicos.html" },
+  { nombre: "Candesartán", url: "Candesartan.html" },
+  { nombre: "Carbamecepina", url: "Carbamecepina.html" },
+  { nombre: "Captopril", url: "captopril.html" },
+  { nombre: "Cefalexina", url: "Cefalexina.html" },
+  { nombre: "Cefalosporinas", url: "Cefalosporinas.html" },
+  { nombre: "Cefepima", url: "Cefepima.html" },
+  { nombre: "Cefotaxima", url: "Cefotaxima.html" },
+  { nombre: "Ceftriaxona", url: "Ceftriaxona.html" },
+  { nombre: "Celecoxib", url: "Celecoxib.html" },
+  { nombre: "Ciprofloxacino", url: "Ciprofloxacino.html" },
+  { nombre: "Claritromicina", url: "Claritromicina.html" },
+  { nombre: "Clindamicina", url: "Clindamicina.html" },
+  { nombre: "Clonazepam", url: "Clonazepam.html" },
+  { nombre: "Clordiazepóxido", url: "Clordiazepoxido.html" },
+  { nombre: "Cloranfenicol", url: "Cloranfenicol.html" },
+  { nombre: "Clorhexidina", url: "Clorhexidina.html" },
+  { nombre: "Cloroquina", url: "Cloroquina.html" },
+  { nombre: "Clorpromazina", url: "Clorpromazina.html" },
+  { nombre: "Clotrimazol", url: "Clotrimazol.html" },
+  { nombre: "Diazepam", url: "Diazepam.html" },
+  { nombre: "Dicloxacilina", url: "Dicloxacilina.html" },
+  { nombre: "Diclofenaco", url: "Diclofenaco.html" },
+  { nombre: "Diloxanida", url: "Diloxanida.html" },
+  { nombre: "Doxiciclina", url: "Doxiciclina.html" },
+  { nombre: "Dexametasona", url: "Dexametasona.html" },
+  { nombre: "Eritromicina", url: "Eritromicina.html" },
+  { nombre: "Espironolactona", url: "Espironolactona.html" },
+  { nombre: "Etambutol", url: "Etambutol.html" },
+  { nombre: "Etosuximida", url: "Etosuximida.html" },
+  { nombre: "Estreptomicina", url: "Estreptomicina.html" },
+  { nombre: "Fenelzina", url: "Fenelzina.html" },
+  { nombre: "Fenitoína", url: "Fenitoina.html" },
+  { nombre: "Fenobarbital", url: "Fenobarbital.html" },
+  { nombre: "Fluoxetina", url: "Fluoxetina.html" },
+  { nombre: "Furosemida", url: "Furosemida.html" },
+  { nombre: "Gatifloxacino", url: "Gatifloxacino.html" },
+  { nombre: "Gentamicina", url: "Gentamicina.html" },
+  { nombre: "Glibenclamida", url: "Glibenclamida.html" },
+  { nombre: "Haloperidol", url: "Haloperidol.html" },
+  { nombre: "Hidroclorotiazida", url: "Hidroclorotiazida.html" },
+  { nombre: "Hidrocortisona", url: "Hidrocortisona.html" },
+  { nombre: "Hipoclorito Sódico", url: "Hipoclorito_Sódico.html" },
+  { nombre: "Ibuprofeno", url: "Ibuprofeno.html" },
+  { nombre: "Imipenem", url: "Imipenem.html" },
+  { nombre: "Imipramina", url: "Imipramina.html" },
+  { nombre: "Indometacina", url: "Indometacina.html" },
+  { nombre: "Insulina", url: "Insulina.html" },
+  { nombre: "Isoniazida", url: "Isoniazida.html" },
+  { nombre: "Ketoconazol", url: "Ketoconazol.html" },
+  { nombre: "Ketoprofeno", url: "Ketoprofeno.html" },
+  { nombre: "Levofloxacino", url: "Levofloxacino.html" },
+  { nombre: "Lidocaína", url: "Lidocaína.html" },
+  { nombre: "Lincomicina", url: "Lincomicina.html" },
+  { nombre: "Litio", url: "Litio.html" },
+  { nombre: "Lorazepam", url: "Lorazepam.html" },
+  { nombre: "Losartán", url: "Losartán.html" },
+  { nombre: "Macrólidos", url: "Macrolidos.html" },
+  { nombre: "Mebendazol", url: "Mebendazol.html" },
+  { nombre: "Meperidina", url: "Meperidina.html" },
+  { nombre: "Mepivacaína", url: "Mepivacaína.html" },
+  { nombre: "Meropenem", url: "Meropenem.html" },
+  { nombre: "Metadona", url: "Metadona.html" },
+  { nombre: "Metamizol", url: "Metamizol.html" },
+  { nombre: "Metformina", url: "Metformina.html" },
+  { nombre: "Metoprolol", url: "Metoprolol.html" },
+  { nombre: "Metronidazol", url: "Metrodinazol.html" },
+  { nombre: "Micafungin", url: "Micafungin.html" },
+  { nombre: "Minociclina", url: "Minociclina.html" },
+  { nombre: "Morfina", url: "Morfina.html" },
+  { nombre: "Moxifloxacino", url: "Moxifloxacino.html" },
+  { nombre: "Nalbufina", url: "Nalbunfina.html" },
+  { nombre: "Naproxeno", url: "Naproxeno.html" },
+  { nombre: "Netilmicina", url: "Netilmicina.html" },
+  { nombre: "Nifedipino", url: "Nifedipino.html" },
+  { nombre: "Nimesulida", url: "Nimesulida.html" },
+  { nombre: "Nistatina", url: "Nistatina.html" },
+  { nombre: "Nitrofurantoína", url: "Nitrofurantoina.html" },
+  { nombre: "Norfloxacino", url: "Norfloxacino.html" },
+  { nombre: "Opioides", url: "Opioides.html" },
+  { nombre: "Oxazepam", url: "Oxazepam.html" },
+  { nombre: "Oxicodona", url: "Oxicodona.html" },
+  { nombre: "Oxitetraciclina", url: "Oxitetraciclina.html" },
+  { nombre: "Paracetamol", url: "Paracetamol.html" },
+  { nombre: "Pentobarbital", url: "Pentobarbital.html" },
+  { nombre: "Pentozocina", url: "Pentozocina.html" },
+  { nombre: "Penicilina G", url: "Penicilina_G.html" },
+  { nombre: "Penicilina V", url: "Penicilina_V.html" },
+  { nombre: "Peróxido de Hidrógeno", url: "Peróxido_de_Hidrógeno.html" },
+  { nombre: "Pioglitazona", url: "Pioglitazona.html" },
+  { nombre: "Pirazinamida", url: "Pirazinamida.html" },
+  { nombre: "Piroxicam", url: "Piroxicam.html" },
+  { nombre: "Praziquantel", url: "Praziquantel.html" },
+  { nombre: "Prednisona", url: "Prednisona.html" },
+  { nombre: "Primaquina", url: "Primaquina.html" },
+  { nombre: "Proparacaína", url: "Proparacaína.html" },
+  { nombre: "Quitina", url: "Quitina.html" },
+  { nombre: "Rifampicina", url: "Rimfapicina.html" },
+  { nombre: "Rosiglitazona", url: "Rosiglitazona.html" },
+  { nombre: "Ribavirina", url: "Ribavirina.html" },
+  { nombre: "Sertaconazol", url: "Sertaconazol.html" },
+  { nombre: "Sertralina", url: "Sertralina.html" },
+  { nombre: "Tetraciclina", url: "Tetraciclina.html" },
+  { nombre: "Tetraciclinas", url: "Tetraciclinas.html" },
+  { nombre: "Ticarcilina", url: "Ticarcilina.html" },
+  { nombre: "Tiopental", url: "Tiopental.html" },
+  { nombre: "Tobramicina", url: "Tobramicina.html" },
+  { nombre: "Tolnaftato Tinacina", url: "Tolnaftato_Tinacina.html" },
+  { nombre: "Trazadona", archivo: "Trazadona.html" },
+  { nombre: "TrimetropimSulfametoxazol", url: "Trimetropim.html" },
+  { nombre: "Valsartan", url: "Valsartan.html" },
+  { nombre: "Vancomicina", url: "Vancomicina.html" },
+  { nombre: "Venlafaxina", url: "Venlafaxina.html" },
+  { nombre: "Verapamil", url: "Verapamil.html" },
+  { nombre: "Zidovudina", url: "Zidovudina.html" }
+];
+
+
+  const searchInput = document.getElementById("search");
+  const suggestions = document.getElementById("suggestions");
+
+  searchInput.addEventListener("input", () => {
+    const input = searchInput.value.toLowerCase();
+    suggestions.innerHTML = "";
+
+    if (input === "") {
+      suggestions.style.display = "none";
+      return;
+    }
+
+    const resultados = farmacos.filter(f => f.nombre.toLowerCase().includes(input));
+
+    if (resultados.length > 0) {
+      suggestions.style.display = "block";
+      resultados.forEach(f => {
+        const div = document.createElement("div");
+        div.textContent = f.nombre;
+        div.addEventListener("click", () => {
+          window.location.href = f.url; // redirige al HTML del fármaco
+        });
+        suggestions.appendChild(div);
+      });
+    } else {
+      suggestions.style.display = "none";
+    }
+  });
+
+  // Oculta sugerencias al hacer clic fuera
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".search-container")) {
+      suggestions.style.display = "none";
+    }
+  });
+</script>
+
+      </div>
+      <ul class="cards">
+        <li class="card">
+          <img src="https://images.pexels.com/photos/9155926/pexels-photo-9155926.jpeg" alt="img">
+          <h3>A</h3>
+          <p>
+            <a href="Acido AcetilS.html">Acido acetil salicilico</a>
+            <br>
+            <a href="Acido Nalixico.html">Acido Nalixico</a>
+            <br>
+            <a href="Acido pipemedico.html">Acido Pipemidico</a>
+            <br>
+            <a href="Acido Valproico.html">Acido Valproico</a>
+            <br>
+            <a href="Aciclovir.html">Aciclovir</a>
+            <br>
+            <a href="Amantadina.html">Amantadina</a>
+            <br>
+            <a href="Amikacina.html">Amikacina</a>
+            <br>
+            <a href="Amoxicilina.html">Amoxicilina</a>
+            <br>
+            <a href="anidulafungin.html">Anidulafungin</a>
+            <br>
+            <a href="Ampicilina.html">Ampicilina</a>
+            <br>
+            <a href="Anfotericina B.html">Anfotericina B</a>
+            <br>
+            <a href="Azitromicina.html">Azitromicina</a>
+            <br>
+            <a href="Albendozol.html">Albendozol</a>
+          </p>
+        </li>
+
+
+
+
+        <li class="card">
+          <img src="images/camping-2.jpg" alt="img">
+          <h3>B</h3>
+          <p>
+            <a href="BenzetonioBenzalconio.html">Benzetonio y Benzalconio</a>
+            <br>
+            <a href="Betametasona.html">Betametasona</a>
+            <br>
+            <a href="Buprenorfina.html">Buprenorfina</a>
+            <br>
+            <a href="Bupivacina.html">Bupivacaina</a>
+          </p>
+        </li>
+
+
+
+        <li class="card">
+          <img src="https://images.pexels.com/photos/12052485/pexels-photo-12052485.jpeg" alt="img">
+          <h3>C</h3>
+          <p><a href="Candesartan.html">Candersatan</a>
+            <br>
+            <a href="captopril.html">Captopril</a>
+            <br>
+            <a href="Carbamecepina.html">Carbamecepina</a>
+            <br>
+            <a href="Cefalexina.html">Cefalexina</a>
+            <br>
+            <a href="Cefepima.html">Cefepima</a>
+            <br>
+            <a href="Cefotaxima.html">Cefotaxima</a>
+            <br>
+            <a href="Ceftriazona.html">Ceftriazona</a>
+            <br>
+            <a href="Ciprofloxacino.html">Ciprofloxacino</a>
+            <br>
+            <a href="Claritromicina.html">Claritromicina</a>
+            <br>
+            <a href="Clindamicina.html">Clindamicina</a>
+            <br>
+            <a href="Clonazepam.html">Clonazepam</a>
+            <br>
+            <a href="Cloranfenicol.html">Cloranfenicol</a>
+            <br>
+            <a href="Clordiazepoxido.html">Clordiazepoxido</a>
+            <br>
+            <a href="Clorhexidina.html">Clorhexidina</a>
+            <br>
+            <a href="Cloroquina.html">Cloroquina</a>
+            <br>
+            <a href="Clorpromazina.html">Clorpromazina</a>
+            <br>
+            <a href="Cloralidona.html">Cloralidona</a>
+            <br>
+            <a href="Clotrimazol.html">Clotrimazol</a>
+             <br>
+            <a href="Celecoxib.html">Celecoxib</a>
+          </p>
+          </p>
+          </p></p>
+        </li>
+
+
+        <li class="card">
+  <img src="https://images.pexels.com/photos/208512/pexels-photo-208512.jpeg" alt="img">
+  <h3>D</h3>
+  <p>
+    <a href="Dexametasona.html">Dexametasona</a>
+    <br>
+    <a href="Diazepam.html">Diazepam</a>
+    <br>
+    <a href="Diclofenaco.html">Diclofenaco</a>
+    <br>
+    <a href="Dicloxacilina.html">Dicloxacilina</a>
+     <br>
+    <a href="Doxiciclina.html">Doxiciclina</a>
+  </p>
+</li>
+<li class="card">
+  <img src="https://images.pexels.com/photos/9742910/pexels-photo-9742910.jpeg" alt="img">
+  <h3>E</h3>
+  <p>
+    <a href="Eritromicina.html">Eritromicina</a>
+    <br>
+    <a href="Espironolactona.html">Espironolactona</a>
+    <br>
+    <a href="Estreptomicina.html">Estreptomicina</a>
+    <br>
+    <a href="Etambutol.html">Etambutol</a>
+    <br>
+   
+  </p>
+</li>
+<li class="card">
+  <img src="https://images.pexels.com/photos/19497086/pexels-photo-19497086.jpeg" alt="img">
+  <h3>F</h3>
+  <p>
+    <a href="Fenelzina.html">Fenelzina</a>
+    <br>
+    <a href="Fenitoína.html">Fenitoína</a>
+    <br>
+    <a href="Fenobarbital.html">Fenobarbital</a>
+    <br>
+    <a href="Fluoxetina.html">Fluoxetina</a>
+    <br>
+    <a href="Furosemida.html">Furosemida</a>
+  </p>
+</li>
+
+<li class="card">
+  <img src="https://images.pexels.com/photos/7230183/pexels-photo-7230183.jpeg" alt="img">
+  <h3>G</h3>
+  <p>
+    <a href="Gatifloxacino.html">Gatifloxacino</a>
+    <br>
+    <a href="Gentamicina.html">Gentamicina</a>
+    <br>
+    <a href="Glibenclamida.html">Glibenclamida</a>
+  </p>
+</li>
+<li class="card">
+  <img src="https://images.pexels.com/photos/3923165/pexels-photo-3923165.jpeg" alt="img">
+  <h3>H</h3>
+  <p>
+    <a href="Haloperidol.html">Haloperidol</a>
+    <br>
+    <a href="Hidroclorotiazida.html">Hidroclorotiazida</a>
+    <br>
+    <a href="Hidrocortisona.html">Hidrocortisona</a>
+    <br>
+    <a href="Hipoclorito_Sódico.html">Hipoclorito Sódico</a>
+  </p>
+</li>
+<li class="card">
+  <img src="https://images.pexels.com/photos/18664857/pexels-photo-18664857.jpeg" alt="img">
+  <h3>I</h3>
+  <p>
+    <a href="Ibuprofeno.html">Ibuprofeno</a>
+    <br>
+    <a href="Imipenem.html">Imipenem</a>
+    <br>
+    <a href="Imipramina.html">Imipramina</a>
+    <br>
+    <a href="Indometacina.html">Indometacina</a>
+    <br>
+    <a href="Insulina.html">Insulina</a>
+    <br>
+    <a href="Isoniazida.html">Isoniazida</a>
+  </p>
+</li>
+
+<li class="card">
+  <img src="https://images.pexels.com/photos/20140024/pexels-photo-20140024.jpeg" alt="img">
+  <h3>K</h3>
+  <p>
+    <a href="Ketoconazol.html">Ketoconazol</a>
+    <br>
+    <a href="Ketoprofeno.html">Ketoprofeno</a>
+    <br>
+    <a href="Ketorolaco.html">Ketorolaco</a>
+  </p>
+</li>
+
+<li class="card">
+  <img src="https://images.pexels.com/photos/7034131/pexels-photo-7034131.jpeg" alt="img">
+  <h3>L</h3>
+  <p>
+    <a href="Levofloxacino.html">Levofloxacino</a>
+    <br>
+    <a href="Lincomicina.html">Lincomicina</a>
+    <br>
+    <a href="Lidocaína.html">Lidocaína</a>
+    <br>
+    <a href="Litio.html">Litio</a>
+    <br>
+    <a href="Lorazepam.html">Lorazepam</a>
+    <br>
+    <a href="Losartán.html">Losartán</a>
+  </p>
+</li>
+
+<li class="card">
+  <img src="https://images.pexels.com/photos/3683051/pexels-photo-3683051.jpeg" alt="img">
+  <h3>M</h3>
+  <p>
+    <a href="Manitol.html">Manitol</a>
+    <br>
+    <a href="Mebendazol.html">Mebendazol</a>
+    <br>
+    <a href="Mepivacaína.html">Mepivacaína</a>
+    <br>
+    <a href="Meropenem.html">Meropenem</a>
+    <br>
+    <a href="Metadona.html">Metadona</a>
+    <br>
+    <a href="Metamizol.html">Metamizol</a>
+    <br>
+    <a href="Metformina.html">Metformina</a>
+    <br>
+    <a href="Metoprolol.html">Metoprolol</a>
+    <br>
+    <a href="Metrodinazol.html">Metrodinazol</a>
+    <br>
+    <a href="Minociclina.html">Minociclina</a>
+    <br>
+    <a href="Morfina.html">Morfina</a>
+    <br>
+    <a href="Moxifloxacino.html">Moxifloxacino</a>
+  </p>
+</li>
+
+<li class="card">
+  <img src="https://images.pexels.com/photos/3873149/pexels-photo-3873149.jpeg" alt="img">
+  <h3>N</h3>
+  <p>
+    <a href="Nalbufina.html">Nalbufina</a>
+    <br>
+    <a href="Naproxeno.html">Naproxeno</a>
+    <br>
+    <a href="Netilmicina.html">Netilmicina</a>
+    <br>
+    <a href="Nifedipino.html">Nifedipino</a>
+    <br>
+    <a href="Nistatina.html">Nistatina</a>
+    <br>
+    <a href="Nitrafurantoína.html">Nitrafurantoína</a>
+    <br>
+    <a href="Norfloxacino.html">Norfloxacino</a>
+  </p>
+</li>
+
+<li class="card">
+  <img src="https://images.pexels.com/photos/7723202/pexels-photo-7723202.jpeg" alt="img">
+  <h3>O</h3>
+  <p>
+    <a href="Oxazepam.html">Oxazepam</a>
+    <br>
+    <a href="Oxiconazol.html">Oxiconazol</a>
+    <br>
+    <a href="Oxitetraciclina.html">Oxitetraciclina</a>
+  </p>
+</li>
+
+<li class="card">
+  <img src="https://images.pexels.com/photos/4210617/pexels-photo-4210617.jpeg" alt="img">
+  <h3>P</h3>
+  <p>
+    <a href="Paracetamol.html">Paracetamol</a>
+    <br>
+    <a href="Penicilina_V.html">Penicilina V</a>
+    <br>
+    <a href="Pentozocina.html">Pentozocina</a>
+    <br>
+    <a href="Pentobarbital.html">Pentobarbital</a>
+    <br>
+    <a href="Peróxido_De_Hidrógeno.html">Peróxido de Hidrógeno</a>
+    <br>
+    <a href="Pioglitazona.html">Pioglitazona</a>
+    <br>
+    <a href="Pirazinamida.html">Pirazinamida</a>
+    <br>
+    <a href="Povidona_Iodada.html">Povidona Iodada</a>
+    <br>
+    <a href="Piroxicam.html">Piroxicam</a>
+    <br>
+    <a href="Praziquantel.html">Praziquantel</a>
+    <br>
+    <a href="Prednisona.html">Prednisona</a>
+    <br>
+    <a href="Primaquina.html">Primaquina</a>
+    <br>
+    <a href="Proparacaína.html">Proparacaína</a>
+  </p>
+</li>
+
+<li class="card">
+  <img src="https://images.pexels.com/photos/5922104/pexels-photo-5922104.jpeg" alt="img">
+  <h3>Q</h3>
+  <p>
+    <a href="Quitina.html">Quitina</a>
+  </p>
+</li>
+
+<li class="card">
+  <img src="https://images.pexels.com/photos/5973355/pexels-photo-5973355.jpeg" alt="img">
+  <h3>R</h3>
+  <p>
+    <a href="Ribavirina.html">Ribavirina</a>
+    <br>
+    <a href="Rimfapicina.html">Rifampicina</a>
+    <br>
+    <a href="Rosiglitazona.html">Rosiglitazona</a>
+  </p>
+</li>
+
+<li class="card">
+  <img src="https://images.pexels.com/photos/12585204/pexels-photo-12585204.jpeg" alt="img">
+  <h3>S</h3>
+  <p>
+    <a href="Sertralina.html">Sertralina</a>
+  </p>
+</li>
+
+<li class="card">
+  <img src="https://images.pexels.com/photos/7904425/pexels-photo-7904425.jpeg" alt="img">
+  <h3>T</h3>
+  <p>
+    <a href="Tetraciclina.html">Tetraciclina</a>
+    <br>
+    <a href="Tiopental.html">Tiopental</a>
+    <br>
+    <a href="Tobramicina.html">Tobramicina</a>
+    <br>
+    <a href="Tolnaftato_Tinacina.html">Tolnaftato</a>
+    <br>
+    <a href="Trazadona.html">Trazadona</a>
+    <br>
+    <a href="Trimetropim.html">Trimetropim/Sulfametoxazol</a>
+  </p>
+</li>
+
+<li class="card">
+  <img src="https://images.pexels.com/photos/9742853/pexels-photo-9742853.jpeg" alt="img">
+  <h3>V</h3>
+  <p>
+    <a href="Valsartan.html">Valsartán</a>
+    <br>
+    <a href="Vancomicina.html">Vancomicina</a>
+    <br>
+    <a href="Venlafaxina.html">Venlafaxina</a>
+    <br>
+    <a href="Verapamil.html">Verapamil</a>
+  </p>
+</li>
+
+<li class="card">
+  <img src="https://images.pexels.com/photos/51929/medications-cure-tablets-pharmacy-51929.jpeg" alt="img">
+  <h3>Z</h3>
+  <p>
+    <a href="Zidovudina.html">Zidovudina</a>
+    <br>
+  </p>
+</li>
+
+      
+    
+  </body>
+</html>

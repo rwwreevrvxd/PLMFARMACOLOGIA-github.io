@@ -1,0 +1,60 @@
+/*
+
+-- Chapters --
+
+Each webpage is like a book filled with chapters. Each section with a different background is a chapter. This is how each chapter is styled and presented.
+
+Chapters can be light or dark, but have many things in common: The text contrasts with the background, and the background scrolls slowly as you read for large screens. The result will hopefully be a smooth, enjoyable reading experience.
+
+*/
+.l-chapter__header {
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.l-chapter__title {
+  margin-top: 0.5rem;
+  font-size: 2.5rem;
+}
+
+.l-chapter__section,
+[class^=l-chapter__section],
+[class*=l-chapter__section] {
+  position: relative;
+  padding: 1rem;
+  padding-top: 4rem;
+  background: no-repeat center 0% fixed;
+  background: no-repeat center 0% fixed;
+  background-size: cover;
+  box-shadow: inset 0 0 0 1000px rgba(255, 255, 255, 0.8);
+}
+.l-chapter__section > div,
+[class^=l-chapter__section] > div,
+[class*=l-chapter__section] > div {
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+.l-chapter__section--dark {
+  color: #eee;
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.6);
+}
+
+/*
+
+As for the parallax effect, the javascript handles all that.
+
+We now have the simple result of centered, parallax text. They're great for fiction or long-form reading with a touch of style. Please enjoy!
+
+*/
+/* Optional Styles are below */
+.l-chapter__header {
+  font-weight: 700;
+  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+}
+
+p {
+  margin-bottom: 1.375rem;
+  line-height: 1.375rem;
+  font-family: "Lucida Grande", "Tahoma", "Verdana", "Arial", sans-serif;
+}
