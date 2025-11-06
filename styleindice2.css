@@ -135,3 +135,34 @@ body{
   color: whitesmoke; 
   box-shadow: inset 0px 0px 10px rgba(0,0,0,0.5);
 }
+
+/* --- FIX para que los enlaces funcionen en iPhone --- */
+
+/* Asegura que los enlaces sean detectables */
+a {
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent; /* mejora toque en iPhone */
+}
+
+/* Si hay una animación o un div encima, que no bloquee el toque */
+.face,
+.content {
+  pointer-events: auto;
+}
+
+/* Si tu CSS usa transformaciones (rotate, flip, translate, scale, etc.) */
+.card, .face, .container {
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* Si tienes una capa de fondo o sombra encima (invisible pero bloquea el tap) */
+.overlay {
+  pointer-events: none;
+}
+
